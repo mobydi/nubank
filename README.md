@@ -42,32 +42,32 @@ You have to install java and lein
 
 ## Assumptions & Limitations
 
-There are three implementation of current task.
-Spent time Sat 2h + Sun 3h + Wen 2h + Fri 3h + Sun 4h ~ 14 hours.
-Weak tests coverage, because I would fit into task time.
+- There are three implementation of current task.
+- Time tracker/spent time Sat 2h + Sun 3h + Wen 2h + Fri 3h + Sun 4h ~ 14 hours.
+- Weak tests coverage, because I would fit into task time.
 
 ### core.clj
 
 Reference implementation. Please look inside ```core.clj```.
 I up to fix smth, if you find a bug. Please fill free to give feedback.
 
-- There is limits, don't support job adding after "job_request" execution
-- Optimized job list enumerations, for huge job list.
-- Algorithm complexity ~ O(j) * O(r) * O(s), there j # of jobs, r - # of requests, s - # os skills. 
+- There is limit, doesn't support adding new jobs after "job_request" execution
+- Benefit. Optimised job list enumerations, for huge job list.
+- Algorithm complexity ~ O(j) * O(r) * O(s), j - # of jobs, r - # of requests, s - # of skills. 
 
 ### simple.clj
 
-Simplified solution, compare to ```core.clj```, but has double job list enumerations to do remove operation. 
+Simplified solution, compare to ```core.clj```, but has double job list enumerations to remove a job from list. 
 
 - Looks better, but has extra enumerations
-- Algorithm complexity ~ O(j) * O(j) * O(r) * O(s), there j # of jobs, r - # of requests, s - # os skills. Not really good.
-- "degueue" function works according to requirement (returns the fittest job to be performed by that agent)
+- Algorithm complexity ~ O(2*j) * O(r) * O(s), j - # of jobs, r - # of requests, s - # of skills. It's not really good.
+- A "degueue" function works according to requirement (it should returns the fittest job to be performed by that agent)
 
 ### /todo/state.clj
 
-I would solve the task in common way, you can add extra jobs and agents after "job_request", it will work well. And this is an optimized algorithm with minimal scans and complexity.
+I would solve the task in common way, you can add extra jobs and agents after "job_request", it will work well. And this is an optimised algorithm with minimal scans and complexity.
 
-- I solved this task persist state into memory, sorry about that. Maybe there is simple solution, I haven't got yet.
-- I would optimise algorithm to minimize job dequeue func complexity, and eliminate linear job list scans.
-- Algorithm job dequeue complexity is O("1")+O(1)+O("1") is get skill key from map and O(1) get first item from list). According to Rich Hickey an "1" in quotes is that close enough to one to not matter.
-- Full algorithm complexity ~ O("1")+O(1)+O(p)+O(s), there p - # of primary_skills, s - # of secondary_skills, better that previous one.
+- I solved this task using atom, sorry about that. Maybe there is a simple solution, I haven't got yet.
+- I would optimise algorithm to minimize job dequeue func complexity, and eliminate linear job list scan(s).
+- Algorithm job dequeue complexity is O("1")+O(1). The first O("1") get a skill from map and the second O(1) get the first item from the job list. (according to Rich Hickey, an "1" in quotes is that close enough to one to not matter)
+- Full algorithm complexity ~ O("1")+O(1)+O(p)+O(s), p - # of primary_skills, s - # of secondary_skills, better that previous one.
